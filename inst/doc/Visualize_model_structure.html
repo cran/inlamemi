@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>How are the models structured?</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">How are the models structured?</h1>
+
+
+
+<p>The measurement error models in <code>inlamemi</code> are
+hierarchical models with three or more sub-models. To construct these
+kinds of models in R-INLA, the structure of the data plays an important
+role (see for instance <a href="https://becarioprecario.bitbucket.io/inla-gitbook/ch-INLAfeatures.html#sec:sevlik">chapter
+6.4 in “Bayesian Inference with INLA by Virgilio Gómez-Rubio</a>).</p>
+<p>The data for each of the models is organized and stacked together in
+a specific way, which together with the formula tells R-INLA how to
+construct the model. For you as a user, it is not necessary to
+understand these structures, but I have included this vignette
+nonetheless to give some more insight for those that are interested.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(inlamemi)</span></code></pre></div>
+<div id="defining-the-model-formula-structured-data-stacks" class="section level2">
+<h2>Defining the model: formula + structured data stacks</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>f_moi <span class="ot">&lt;-</span> y <span class="sc">~</span> x <span class="sc">+</span> z</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>f_imp <span class="ot">&lt;-</span> x <span class="sc">~</span> z</span></code></pre></div>
+<p>When using the <code>inlamemi</code> package, the user specifies two
+formulas, one for the main model of interest, and one for the imputation
+model. But these are just two of the sub-models, there is also at least
+one measurement error model under the hood. All of these models need to
+be communicated to the <code>inla()</code> function, but this takes only
+one formula-argument. So all the formula terms are simply added together
+in one big formula, and in order to communicate to the <code>inla</code>
+function which terms should apply to which sub-model, we supply the data
+in structured matrices where each layer of the matrix shows which terms
+should be “activated” in that layer.</p>
+<p>In practice, this can be done either through manually constructed
+matrices (see for instance <a href="https://emmaskarstein.github.io/Missing-data-and-measurement-error/simulation_example.html" class="uri">https://emmaskarstein.github.io/Missing-data-and-measurement-error/simulation_example.html</a>
+for a detailed explanation of that), or one can use the
+<code>inla.stack</code> function to specify the modules for each
+sub-model separately, and then stack them together. For the
+<code>inlamemi</code> package, I structure the data using
+<code>inla.stacks</code>. The outcome is the same, but it just makes the
+construction a bit more generalizable. The stack construction is done in
+the function <code>make_inlamemi_stacks</code>, which is then called by
+<code>fit_inlamemi</code>, so this is not a function the user would
+typically need to interact with.</p>
+<p>The function <code>show_data_structure</code> converts the stack
+object to LaTeX matrices, and only shows the first and last row for each
+sub-model, making it easier to get a clear overview over the structure
+of the model. Now, we will take a look at these matrices for two
+different models: one with Berkson measurement error, and one
+without.</p>
+</div>
+<div id="structure-for-a-classical-measurement-error-model" class="section level2">
+<h2>Structure for a classical measurement error model</h2>
+<p>All models fit with <code>inlamemi</code> will contain a classical
+measurement error layer, as even if there is no measurement error, the
+classical ME model is needed for technical reasons in order to do the
+covariate imputation. In the cases where there is no classical ME, we
+scale the classical error precision to be very large, thus effectively
+“turning off” the error adjustment while keeping the imputation
+model.</p>
+<p>In this example, our hierarchical model consists of the main model of
+interest: <span class="math display">\[
+\boldsymbol{y} = \beta_0 + \beta_x \boldsymbol{x} + \beta_z
+\boldsymbol{z} + \boldsymbol{\varepsilon} \ , \quad
+\boldsymbol{\varepsilon} \sim N(\boldsymbol{0}, \tau_y\boldsymbol{I}) \
+,
+\]</span> the classical error model: <span class="math display">\[
+  \boldsymbol{w} = \boldsymbol{x} + \boldsymbol{u}_c \ , \quad
+\boldsymbol{u}_c \sim N(\boldsymbol{0}, \tau_{u_c}\boldsymbol{I}) \ ,
+\]</span> and the imputation model: <span class="math display">\[
+\boldsymbol{x} = \alpha_0 + \alpha_z \boldsymbol{z} +
+\boldsymbol{\varepsilon}_x \ , \quad \boldsymbol{\varepsilon}_x \sim
+N(\boldsymbol{0}, \tau_x\boldsymbol{I}) \ .
+\]</span></p>
+<p>These need to be rewritten for R-INLA such that there are no latent
+effects on the left hand side: <span class="math display">\[
+\begin{align}
+  \boldsymbol{y} &amp;= \beta_0 + \beta_x \boldsymbol{x} + \beta_z
+\boldsymbol{z} + \boldsymbol{\varepsilon} \ , \quad
+&amp;\boldsymbol{\varepsilon} \sim N(\boldsymbol{0},
+\tau_y\boldsymbol{I}) \ , \\
+  \boldsymbol{w} &amp;= \boldsymbol{x} + \boldsymbol{u}_c \ , \quad
+&amp;\boldsymbol{u}_c \sim N(\boldsymbol{0}, \tau_{u_c}\boldsymbol{I}) \
+, \\
+  \boldsymbol{0} &amp;= -\boldsymbol{x} + \alpha_0 + \alpha_z
+\boldsymbol{z} + \boldsymbol{\varepsilon}_x \ , \quad
+&amp;\boldsymbol{\varepsilon}_x \sim N(\boldsymbol{0},
+\tau_x\boldsymbol{I}) \ .
+\end{align}
+\]</span> We can construct the necessary stacks for this model using the
+<code>make_inlamemi_stacks</code> function:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>classical_stack <span class="ot">&lt;-</span> <span class="fu">make_inlamemi_stacks</span>(<span class="at">data =</span> simple_data,</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                                      <span class="at">formula_moi =</span> f_moi,</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>                                      <span class="at">formula_imp =</span> f_imp,</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>                                      <span class="at">error_type =</span> <span class="st">&quot;classical&quot;</span>)</span></code></pre></div>
+<p>and then we can visualize the data in these stacks with the
+<code>show_data_structure</code> function:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>classical_summary <span class="ot">&lt;-</span> <span class="fu">show_data_structure</span>(classical_stack)</span></code></pre></div>
+<p>The LaTeX code is stored in
+<code>classical_summary$matrix_string</code>. If you want to display the
+matrices in an rmarkdown document, you can use the <code>cat</code>
+function, and just remember to set <code>results = &#39;asis&#39;</code> as the
+chunk option.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">cat</span>(classical_summary<span class="sc">$</span>matrix_string)</span></code></pre></div>
+<p><span class="math display">\[\underbrace{\begin{bmatrix}
+10.81 &amp; \texttt{NA} &amp; \texttt{NA}\\
+\vdots &amp; \vdots &amp; \vdots\\
+6.18 &amp; \texttt{NA} &amp; \texttt{NA}\\
+\texttt{NA} &amp; 4.98 &amp; \texttt{NA}\\
+\vdots &amp; \vdots &amp; \vdots\\
+\texttt{NA} &amp; 1.46 &amp; \texttt{NA}\\
+\texttt{NA} &amp; \texttt{NA} &amp; 0\\
+\vdots &amp; \vdots &amp; \vdots\\
+\texttt{NA} &amp; \texttt{NA} &amp; 0\\
+\end{bmatrix}}_{\texttt{Y}}
+=
+\beta_{0}\underbrace{\begin{bmatrix}
+1\\
+\vdots\\
+1\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{beta.0}} + \beta_{x}\underbrace{\begin{bmatrix}
+1\\
+\vdots\\
+1000\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{beta.x}} + \beta_{z}\underbrace{\begin{bmatrix}
+0.98\\
+\vdots\\
+0.77\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{beta.z}} + \underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+1\\
+\vdots\\
+1000\\
+-1\\
+\vdots\\
+-1000\\
+\end{bmatrix}}_{\texttt{id.x}} + \alpha_{x,0}\underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+1\\
+\vdots\\
+1\\
+\end{bmatrix}}_{\texttt{alpha.x.0}} +
+\alpha_{x,z}\underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+0.98\\
+\vdots\\
+0.77\\
+\end{bmatrix}}_{\texttt{alpha.x.z}}\]</span></p>
+</div>
+<div id="structure-for-berkson-and-classical-measurement-error-model" class="section level2">
+<h2>Structure for Berkson and classical measurement error model</h2>
+<p>Next, we consider a case where we have Berkson measurement error,
+along with either classical ME, missingness or both in the same
+covariate (whether it is classical ME, missingness or both makes no
+difference for this example, as that only affects the scaling of the
+measurement error precision).</p>
+<p>In this example, our hierarchical model consists of four levels; the
+main model of interest: <span class="math display">\[
+\boldsymbol{y} = \beta_0 + \beta_x \boldsymbol{x} + \beta_z
+\boldsymbol{z} + \boldsymbol{\varepsilon} \ , \quad
+\boldsymbol{\varepsilon} \sim N(\boldsymbol{0}, \tau_y\boldsymbol{I}) \
+,
+\]</span> the Berkson error model: <span class="math display">\[
+  \boldsymbol{x} = \boldsymbol{r} + \boldsymbol{u}_b \ , \quad
+\boldsymbol{u}_b \sim N(\boldsymbol{0}, \tau_{u_b}\boldsymbol{I}) \ ,
+\]</span> the classical error model: <span class="math display">\[
+  \boldsymbol{w} = \boldsymbol{r} + \boldsymbol{u}_c \ , \quad
+\boldsymbol{u}_c \sim N(\boldsymbol{0}, \tau_{u_c}\boldsymbol{I}) \ ,
+\]</span> and the imputation model: <span class="math display">\[
+\boldsymbol{r} = \alpha_0 + \alpha_z \boldsymbol{z} +
+\boldsymbol{\varepsilon}_r \ , \quad \boldsymbol{\varepsilon}_r \sim
+N(\boldsymbol{0}, \tau_r\boldsymbol{I}) \ .
+\]</span></p>
+<p>Notice that we now have a new latent variable <span class="math inline">\(\boldsymbol{r}\)</span>, which serves as a link
+between the sub-models and corresponds to the variable that is subject
+to Berkson error but that does not yet have the classical error
+added.</p>
+<p>Rewritten for R-INLA:</p>
+<p><span class="math display">\[
+\begin{align}
+  \boldsymbol{y} &amp;= \beta_0 + \beta_x \boldsymbol{x} + \beta_z
+\boldsymbol{z} + \boldsymbol{\varepsilon} \ , \quad
+&amp;\boldsymbol{\varepsilon} &amp;\sim N(\boldsymbol{0},
+\tau_y\boldsymbol{I}) \ , \\
+  \boldsymbol{0} &amp;= -\boldsymbol{x} + \boldsymbol{r} +
+\boldsymbol{u}_b \ , \quad &amp; \boldsymbol{u}_b &amp;\sim
+N(\boldsymbol{0}, \tau_{u_b}\boldsymbol{I}) \ , \\
+  \boldsymbol{w} &amp;= \boldsymbol{r} + \boldsymbol{u}_c \ , \quad
+&amp;\boldsymbol{u}_c &amp;\sim N(\boldsymbol{0},
+\tau_{u_c}\boldsymbol{I}) \ , \\
+  \boldsymbol{0} &amp;= -\boldsymbol{r} + \alpha_0 + \alpha_z
+\boldsymbol{z} + \boldsymbol{\varepsilon}_r \ , \quad
+&amp;\boldsymbol{\varepsilon}_r &amp;\sim N(\boldsymbol{0},
+\tau_r\boldsymbol{I}) \ .
+\end{align}
+\]</span> Just like above, we construct the stacks:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>berkson_stack <span class="ot">&lt;-</span> <span class="fu">make_inlamemi_stacks</span>(<span class="at">data =</span> simple_data,</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>              <span class="at">formula_moi =</span> f_moi,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>              <span class="at">formula_imp =</span> f_imp,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>              <span class="at">error_type =</span> <span class="fu">c</span>(<span class="st">&quot;classical&quot;</span>, <span class="st">&quot;berkson&quot;</span>, <span class="st">&quot;missing&quot;</span>))</span></code></pre></div>
+<p>and then visualize the resulting matrices:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>berkson_summary <span class="ot">&lt;-</span> <span class="fu">show_data_structure</span>(berkson_stack)</span></code></pre></div>
+<p><span class="math display">\[\underbrace{\begin{bmatrix}
+10.81 &amp; \texttt{NA} &amp; \texttt{NA} &amp; \texttt{NA}\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+6.18 &amp; \texttt{NA} &amp; \texttt{NA} &amp; \texttt{NA}\\
+\texttt{NA} &amp; 0 &amp; \texttt{NA} &amp; \texttt{NA}\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+\texttt{NA} &amp; 0 &amp; \texttt{NA} &amp; \texttt{NA}\\
+\texttt{NA} &amp; \texttt{NA} &amp; 4.98 &amp; \texttt{NA}\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+\texttt{NA} &amp; \texttt{NA} &amp; 1.46 &amp; \texttt{NA}\\
+\texttt{NA} &amp; \texttt{NA} &amp; \texttt{NA} &amp; 0\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+\texttt{NA} &amp; \texttt{NA} &amp; \texttt{NA} &amp; 0\\
+\end{bmatrix}}_{\texttt{Y}}
+=
+\beta_{0}\underbrace{\begin{bmatrix}
+1\\
+\vdots\\
+1\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{beta.0}} + \beta_{x}\underbrace{\begin{bmatrix}
+1\\
+\vdots\\
+1000\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{beta.x}} + \beta_{z}\underbrace{\begin{bmatrix}
+0.98\\
+\vdots\\
+0.77\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{beta.z}} + \underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+-1\\
+\vdots\\
+-1000\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{id.x}} + \underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+1\\
+\vdots\\
+1000\\
+1\\
+\vdots\\
+1000\\
+-1\\
+\vdots\\
+-1000\\
+\end{bmatrix}}_{\texttt{id.r}} + \alpha_{x,0}\underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+1\\
+\vdots\\
+1\\
+\end{bmatrix}}_{\texttt{alpha.x.0}} +
+\alpha_{x,z}\underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+0.98\\
+\vdots\\
+0.77\\
+\end{bmatrix}}_{\texttt{alpha.x.z}}\]</span></p>
+<p>As you see, the only things that change is that there is added
+another model level, which leads to another column in the response
+matrix, and we additionally have a new column for the latent effect
+<span class="math inline">\(\boldsymbol{r}\)</span>.</p>
+</div>
+<div id="accessing-the-stacks-from-the-model-object" class="section level2">
+<h2>Accessing the stacks from the model object</h2>
+<p>The data stacks that are generated by
+<code>make_inlamemi_stacks</code> inside <code>fit_inlamemi</code> is
+also returned with the <code>inlamemi</code> model object, so you don’t
+need to run <code>make_inlamemi_stacks</code> yourself. This is how to
+access the stacks from the model object:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>inlamemi_model <span class="ot">&lt;-</span> <span class="fu">fit_inlamemi</span>(<span class="at">data =</span> simple_data,</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>                           <span class="at">formula_moi =</span> f_moi,</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>                           <span class="at">formula_imp =</span> f_imp,</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>                           <span class="at">family_moi =</span> <span class="st">&quot;gaussian&quot;</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>                           <span class="at">error_type =</span> <span class="fu">c</span>(<span class="st">&quot;berkson&quot;</span>, <span class="st">&quot;classical&quot;</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>                           <span class="at">prior.prec.moi =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>),</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>                           <span class="at">prior.prec.berkson =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">9</span>),</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>                           <span class="at">prior.prec.classical =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">9</span>),</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>                           <span class="at">prior.prec.imp =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>),</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>                           <span class="at">initial.prec.moi =</span> <span class="dv">1</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>                           <span class="at">initial.prec.berkson =</span> <span class="dv">1</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>                           <span class="at">initial.prec.classical =</span> <span class="dv">1</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>                           <span class="at">initial.prec.imp =</span> <span class="dv">1</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">show_data_structure</span>(inlamemi_model<span class="sc">$</span>stack_data)<span class="sc">$</span>matrix_string)</span></code></pre></div>
+<p><span class="math display">\[\underbrace{\begin{bmatrix}
+10.81 &amp; \texttt{NA} &amp; \texttt{NA} &amp; \texttt{NA}\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+6.18 &amp; \texttt{NA} &amp; \texttt{NA} &amp; \texttt{NA}\\
+\texttt{NA} &amp; 0 &amp; \texttt{NA} &amp; \texttt{NA}\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+\texttt{NA} &amp; 0 &amp; \texttt{NA} &amp; \texttt{NA}\\
+\texttt{NA} &amp; \texttt{NA} &amp; 4.98 &amp; \texttt{NA}\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+\texttt{NA} &amp; \texttt{NA} &amp; 1.46 &amp; \texttt{NA}\\
+\texttt{NA} &amp; \texttt{NA} &amp; \texttt{NA} &amp; 0\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+\texttt{NA} &amp; \texttt{NA} &amp; \texttt{NA} &amp; 0\\
+\end{bmatrix}}_{\texttt{Y}}
+=
+\beta_{0}\underbrace{\begin{bmatrix}
+1\\
+\vdots\\
+1\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{beta.0}} + \beta_{x}\underbrace{\begin{bmatrix}
+1\\
+\vdots\\
+1000\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{beta.x}} + \beta_{z}\underbrace{\begin{bmatrix}
+0.98\\
+\vdots\\
+0.77\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{beta.z}} + \underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+-1\\
+\vdots\\
+-1000\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{id.x}} + \underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+1\\
+\vdots\\
+1000\\
+1\\
+\vdots\\
+1000\\
+-1\\
+\vdots\\
+-1000\\
+\end{bmatrix}}_{\texttt{id.r}} + \alpha_{x,0}\underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+1\\
+\vdots\\
+1\\
+\end{bmatrix}}_{\texttt{alpha.x.0}} +
+\alpha_{x,z}\underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+0.98\\
+\vdots\\
+0.77\\
+\end{bmatrix}}_{\texttt{alpha.x.z}}\]</span></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>mis_mod <span class="ot">&lt;-</span> <span class="fu">fit_inlamemi</span>(<span class="at">formula_moi =</span> y <span class="sc">~</span> x <span class="sc">+</span> z1 <span class="sc">+</span> z2,</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>                          <span class="at">formula_imp =</span> x <span class="sc">~</span> z1,</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>                          <span class="at">formula_mis =</span> m <span class="sc">~</span> z2 <span class="sc">+</span> x,</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>                          <span class="at">family_moi =</span> <span class="st">&quot;gaussian&quot;</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>                          <span class="at">data =</span> mar_data,</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>                          <span class="at">error_type =</span> <span class="st">&quot;missing&quot;</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>                          <span class="at">prior.beta.error =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">1000</span>),</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>                          <span class="at">prior.gamma.error =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">1000</span>),</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>                          <span class="at">prior.prec.moi =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">9</span>),</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>                          <span class="at">prior.prec.imp =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">9</span>),</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>                          <span class="at">initial.prec.moi =</span> <span class="dv">1</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>                          <span class="at">initial.prec.imp =</span> <span class="dv">1</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">show_data_structure</span>(mis_mod<span class="sc">$</span>stack_data)<span class="sc">$</span>matrix_string)</span></code></pre></div>
+<p><span class="math display">\[\underbrace{\begin{bmatrix}
+7.9 &amp; \texttt{NA} &amp; \texttt{NA} &amp; \texttt{NA}\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+2.58 &amp; \texttt{NA} &amp; \texttt{NA} &amp; \texttt{NA}\\
+\texttt{NA} &amp; 2.31 &amp; \texttt{NA} &amp; \texttt{NA}\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+\texttt{NA} &amp; \texttt{NA} &amp; \texttt{NA} &amp; \texttt{NA}\\
+\texttt{NA} &amp; \texttt{NA} &amp; 0 &amp; \texttt{NA}\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+\texttt{NA} &amp; \texttt{NA} &amp; 0 &amp; \texttt{NA}\\
+\texttt{NA} &amp; \texttt{NA} &amp; \texttt{NA} &amp; 0\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+\texttt{NA} &amp; \texttt{NA} &amp; \texttt{NA} &amp; 1\\
+\end{bmatrix}}_{\texttt{Y}}
+=
+\beta_{0}\underbrace{\begin{bmatrix}
+1\\
+\vdots\\
+1\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{beta.0}} + \beta_{x}\underbrace{\begin{bmatrix}
+1\\
+\vdots\\
+1000\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{beta.x}} + \beta_{z1}\underbrace{\begin{bmatrix}
+0.98\\
+\vdots\\
+0.77\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{beta.z1}} +
+\beta_{z2}\underbrace{\begin{bmatrix}
+-0.05\\
+\vdots\\
+-0.72\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{beta.z2}} + \underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+1\\
+\vdots\\
+1000\\
+-1\\
+\vdots\\
+-1000\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{id.x}} + \alpha_{x,0}\underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+1\\
+\vdots\\
+1\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{alpha.x.0}} +
+\alpha_{x,z1}\underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+0.98\\
+\vdots\\
+0.77\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\end{bmatrix}}_{\texttt{alpha.x.z1}} +
+\gamma_{x,0}\underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+1\\
+\vdots\\
+1\\
+\end{bmatrix}}_{\texttt{gamma.x.0}} +
+\gamma_{x,z2}\underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+-0.05\\
+\vdots\\
+-0.72\\
+\end{bmatrix}}_{\texttt{gamma.x.z2}} +
+\gamma_{x}\underbrace{\begin{bmatrix}
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+\texttt{NA}\\
+\vdots\\
+\texttt{NA}\\
+1\\
+\vdots\\
+1000\\
+\end{bmatrix}}_{\texttt{gamma.x}}\]</span></p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

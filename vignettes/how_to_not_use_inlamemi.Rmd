@@ -1,0 +1,441 @@
+---
+title: "How to not use inlamemi"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How to not use inlamemi}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+
+```r
+library(inlamemi)
+library(INLA)
+```
+
+In this vignette, we show how to build the measurement error and missingness models that `inlamemi` can fit, but without using `inlamemi`. This is so that if you have a model that for some reason does not work within `inlamemi`, you can see some examples of how to fit these models "manually". 
+
+There are two ways to structure the data for the models, the first option is the one taken in [Muff et al (2015)](https://arxiv.org/abs/1302.3065) and [Skarstein et al (2023)](https://doi.org/10.1002/bimj.202300078), where the matrices are constructed directly by hand. The other approach is the one that is used internally in `inlamemi`, where we use the function `inla.stack()` to define the data structure for each sub-model, and then join these together. This latter approach is a bit more modular, and so this is the approach we will show here.
+
+## A short explanation of `inla.stack()` for hierarchical modelling
+The `inla.stack()` function is most commonly used for spatial modelling with stochastic partial differential equations (SPDE), since the data then is a bit more complex to structure. A description of using stacks in that context can be found in [chapter 7.3.3 of *Bayesian inference with INLA*](https://becarioprecario.bitbucket.io/inla-gitbook/ch-spatial.html#spatial-models-using-stochastic-partial-differential-equations). However, they can also be quite useful when defining hierarchical models with multiple likelihoods, which traditionally need to be defined by setting up matrices where the structure of the matrices encode the structure of the model, as explained in [chapter 6.4 of *Bayesian inference with INLA*](https://becarioprecario.bitbucket.io/inla-gitbook/ch-INLAfeatures.html#sec:sevlik). The stacks are eventually converted to these matrices by INLA, but for the modeller it may be more convenient to define the model through the stacks. one reason is that when setting up the matrices you need to know from the beginning how many levels you will have in the model, since this determines the number of columns in the matrices. However, with the stacks, each model level has its own stack, and previous stacks do not change if you add additional stacks. That is, the definition of stacks for each model level can be done independently. 
+
+The `inla.stack` function takes four arguments:
+
+- `data`: a list of the data on the left side of the formula (the response)
+- `A`: a list of projector matrices, in our case for non-spatial models this is just set to `list(1)`
+- `effects`: a list of the SPDE index and covariates, in our case, just a list of a list containing the covariates and random effects. 
+- `tag`: a character vector labelling this group, which can be useful for extracting certain parts of the stack later.
+
+
+## Classical and Berkson measurement error and missingness
+
+In the first example, we use the dataset `simple_data`, generated in the vignette [Simulated examples](https://emmaskarstein.github.io/inlamemi/articles/simulated_examples.html). This dataset has classical and Berkson measurement error, and missing data, and so the main model we want to fit is 
+
+$$
+  y_i = \beta_0 + \beta_x x_i + \beta_z z_i + \varepsilon_i,
+$$
+the Berkson measurement error is
+$$
+  0 = -x_{true, i} + r_i + u_{b,i},
+$$
+the classical measurement error model is
+$$
+  x_i = r_i + u_{c,i},
+$$
+and the imputation model is
+
+$$
+  0 = -r_i + \alpha_0 + \alpha_z z_i + \varepsilon_{r,i}.
+$$
+
+We begin by loading the data and defining the number of observations.
+
+
+```r
+data <- simple_data
+n <- nrow(data)
+```
+
+Next, we define all the priors and initial values.
+
+```r
+# Prior for beta.x
+prior.beta <- c(0, 1/1000) # N(0, 10^3)
+
+# Priors for y, measurement error and true x-value precision
+prior.prec.y <- c(10, 9)
+prior.prec.u_b <- c(10, 9)
+prior.prec.u_c <- c(10, 9)
+prior.prec.r <- c(10, 9)
+
+# Initial values
+initial.prec.y <- 1
+initial.prec.u_b <- 1
+initial.prec.u_c <- 1
+initial.prec.r <- 1
+```
+
+In `inlamemi`, we could then fit the model like this:
+
+```r
+# Fit the model
+simple_model <- fit_inlamemi(data = data,
+                           formula_moi = y ~ x + z,
+                           formula_imp = x ~ z,
+                           family_moi = "gaussian",
+                           error_type = c("berkson", "classical"),
+                           prior.prec.moi = prior.prec.y,
+                           prior.prec.berkson = prior.prec.u_b,
+                           prior.prec.classical = prior.prec.u_c,
+                           prior.prec.imp = prior.prec.r,
+                           initial.prec.moi = initial.prec.y,
+                           initial.prec.berkson = initial.prec.u_b,
+                           initial.prec.classical = initial.prec.u_c,
+                           initial.prec.imp = initial.prec.r)
+```
+
+If we instead want to do this without `inlamemi`, we start by defining the stacks for each model level.
+
+For the main regression model, we have the model
+$$
+  y_i = \beta_0 + \beta_x x_i + \beta_z z_i + \varepsilon_i,
+$$
+which is defined in a stack like this:
+
+```r
+stk_moi <- inla.stack(data = list(y_moi = data$y),
+                      A = list(1),
+                      effects = list(
+                        list(beta.0 = rep(1, n),
+                             beta.x = 1:n,
+                             beta.z = data$z)),
+                      tag = "moi")
+```
+
+Next, the Berkson measurement error model is
+$$
+  0 = -x_{true, i} + r_i + u_{b,i},
+$$
+and the corresponding stack is:
+
+```r
+stk_b <- inla.stack(data = list(y_berkson = rep(0, n)),
+                    A = list(1),
+                    effects = list(
+                      list(id.x = 1:n,
+                           weight.x = -1,
+                           id.r = 1:n,
+                           weight.r = 1)),
+                    tag = "berkson")
+```
+
+The classical measurement error model is
+$$
+  x_i = r_i + u_{c,i},
+$$
+
+and the stack is:
+
+```r
+stk_c <- inla.stack(data = list(y_classical = data$x),
+                    A = list(1),
+                    effects = list(
+                      list(id.r = 1:n,
+                           weight.r = 1)),
+                    tag = "classical")
+```
+
+Finally, the imputation model is
+$$
+  0 = -r_i + \alpha_0 + \alpha_z z_i + \varepsilon_{r,i}.
+$$
+and the corresponding stack is
+
+```r
+stk_imp <- inla.stack(data = list(y_imp = rep(0, n)),
+                      A = list(1),
+                      effects = list(
+                        list(id.r = 1:n,
+                             weight.r = rep(-1, n),
+                             alpha.0 = rep(1, n),
+                             alpha.z = data$z)),
+                      tag = "imputation")
+```
+
+We then stack these together, which will give us the matrix formulation that we also could have specified manually.
+
+
+```r
+stk_full <- inla.stack(stk_moi, stk_b, stk_c, stk_imp)
+```
+
+For this model, we have two latent effects, `x` and `r`, which are both specified in the formula. For further details on the formula, see the supplementary material of [Skarstein et al (2023)](https://doi.org/10.1002/bimj.202300078), which can be found online here: https://emmaskarstein.github.io/Missing-data-and-measurement-error/simulation_example.html 
+
+
+```r
+formula <- list(y_moi, y_berkson, y_classical, y_imp) ~ - 1 + beta.0 + beta.z +
+  f(beta.x, copy = "id.x",
+    hyper = list(beta = list(param = c(0, 1/1000), fixed = FALSE))) +
+  f(id.x, weight.x, model = "iid", values = 1:n,
+    hyper = list(prec = list(initial = -15, fixed = TRUE))) +
+  f(id.r, weight.r, model="iid", values = 1:n,
+    hyper = list(prec = list(initial = -15, fixed = TRUE))) +
+  alpha.0 + alpha.z
+```
+
+Finally, we call the `inla()` function. This model consists of four Gaussian sub-models, and in the `control.family` argument we give the priors for each of these.
+
+```r
+model_sim <- inla(formula, data = inla.stack.data(stk_full),
+                  family = c("gaussian", "gaussian", "gaussian", "gaussian"),
+                  control.family = list(
+                    list(hyper = list(prec = list(initial = log(initial.prec.y),
+                                                  param = prior.prec.y,
+                                                  fixed = FALSE))),
+                    list(hyper = list(prec = list(initial = log(initial.prec.u_b),
+                                                  param = prior.prec.u_b,
+                                                  fixed = FALSE))),
+                    list(hyper = list(prec = list(initial = log(initial.prec.u_c),
+                                                  param = prior.prec.u_c,
+                                                  fixed = FALSE))),
+                    list(hyper = list(prec = list(initial = log(initial.prec.r),
+                                                  param = prior.prec.r,
+                                                  fixed = FALSE)))
+                  ),
+                  control.predictor = list(compute = TRUE)
+)
+
+summary(model_sim)
+#> 
+#> Call:
+#>    c("inla.core(formula = formula, family = family, contrasts = contrasts, ", " data = data, quantiles = quantiles, E = E, 
+#>    offset = offset, ", " scale = scale, weights = weights, Ntrials = Ntrials, strata = strata, ", " lp.scale = lp.scale, 
+#>    link.covariates = link.covariates, verbose = verbose, ", " lincomb = lincomb, selection = selection, control.compute = 
+#>    control.compute, ", " control.predictor = control.predictor, control.family = control.family, ", " control.inla = 
+#>    control.inla, control.fixed = control.fixed, ", " control.mode = control.mode, control.expert = control.expert, ", " 
+#>    control.hazard = control.hazard, control.lincomb = control.lincomb, ", " control.update = control.update, control.lp.scale 
+#>    = control.lp.scale, ", " control.pardiso = control.pardiso, only.hyperparam = only.hyperparam, ", " inla.call = inla.call, 
+#>    inla.arg = inla.arg, num.threads = num.threads, ", " keep = keep, working.directory = working.directory, silent = silent, 
+#>    ", " inla.mode = inla.mode, safe = FALSE, debug = debug, .parent.frame = .parent.frame)" ) 
+#> Time used:
+#>     Pre = 1.8, Running = 1.78, Post = 0.244, Total = 3.82 
+#> Fixed effects:
+#>          mean    sd 0.025quant 0.5quant 0.975quant  mode kld
+#> beta.0  1.046 0.221      0.628    1.050      1.468 1.050   0
+#> beta.z  1.945 0.392      1.256    1.955      2.658 1.951   0
+#> alpha.0 1.033 0.051      0.934    1.033      1.132 1.033   0
+#> alpha.z 2.025 0.052      1.922    2.025      2.127 2.025   0
+#> 
+#> Random effects:
+#>   Name	  Model
+#>     id.x IID model
+#>    id.r IID model
+#>    beta.x Copy
+#> 
+#> Model hyperparameters:
+#>                                             mean    sd 0.025quant 0.5quant 0.975quant  mode
+#> Precision for the Gaussian observations    1.113 0.356      0.540    1.071       1.92 0.995
+#> Precision for the Gaussian observations[2] 1.125 0.359      0.597    1.066       2.00 0.955
+#> Precision for the Gaussian observations[3] 0.928 0.112      0.722    0.923       1.16 0.916
+#> Precision for the Gaussian observations[4] 0.977 0.126      0.757    0.968       1.25 0.946
+#> Beta for beta.x                            1.974 0.202      1.587    1.970       2.38 1.954
+#> 
+#> Marginal log-Likelihood:  -20700.01 
+#>  is computed 
+#> Posterior summaries for the linear predictor and the fitted values are computed
+#> (Posterior marginals needs also 'control.compute=list(return.marginals.predictor=TRUE)')
+```
+
+## A model for missing data, missing not at random
+
+In this example, dealing with only missing data, we show how to include another level in the model to potentially capture how the missingness mechanism may depend on available covariates.
+
+In the dataset, simulated below, we let the value of the covariate `x` with missingness depend on another covariate `z1` (corresponding to the imputation model), while the probability of an entry in `x` missing depends on another covariate `z2` (corresponding to the missingness model). 
+
+
+
+```r
+set.seed(2024)
+n <- 1000
+
+z1 <- rnorm(n, mean = 0, sd = 1)
+z2 <- rnorm(n, mean = 0, sd = 1)
+
+alpha.0 <- 1; alpha.z1 <- 0.3
+x <- rnorm(n, mean = alpha.0 + alpha.z1*z1, sd = 1)
+
+gamma.0 <- -1.5; gamma.z2 <- -0.5
+m_pred <- gamma.0 + gamma.z2*z2
+m_prob <- exp(m_pred)/(1 + exp(m_pred))
+m <- as.logical(rbinom(n, 1, prob = m_prob))
+x_obs <- x
+x_obs[m] <- NA
+
+sum(is.na(x_obs))/length(x_obs)
+#> [1] 0.183
+
+beta.0 <- 1; beta.x <- 2; beta.z1 <- 2; beta.z2 <- 2
+y <- beta.0 + beta.x*x + beta.z1*z1 + beta.z2*z2 + rnorm(n)
+
+missing_data <- data.frame(y = y, x = x_obs, x_true = x, z1 = z1, z2 = z2)
+```
+
+The main model of interest is in this case 
+$$
+y_i = \beta_0 + \beta_x x_{true,i} + \beta_{z_1} z_{1,i} + \beta_{z_2} z_{2,i} + \varepsilon_i ,
+$$
+and the stack is:
+
+```r
+stk_moi <- inla.stack(data = list(y_moi = missing_data$y),
+                      A = list(1),
+                      effects = list(
+                        list(beta.0 = rep(1, n),
+                             beta.x = 1:n,
+                             beta.z1 = missing_data$z1,
+                             beta.z2 = missing_data$z2)),
+                      tag = "moi")
+```
+
+The classical measurement error is just functioning as a link in this case, but the model is
+$$
+  x_{obs, i} = x_{true, i} + u_{c,i},
+$$
+where the precision of $u_{c,i}$ is set to be very high for those $i$ where $x_{obs,i}$ is observed. The stack for this level is:
+
+```r
+stk_c <- inla.stack(data = list(y_classical = missing_data$x),
+                    A = list(1),
+                    effects = list(
+                      list(id.x = 1:n,
+                           weight.x = 1)),
+                    tag = "classical")
+```
+
+Next we have the imputation model 
+$$
+  0 = -x_{true,i} + \alpha_0 + \alpha_{z_1} z_{1,i} + \varepsilon_{x,i},
+$$
+and the stack is
+
+
+```r
+stk_imp <- inla.stack(data = list(y_imp = rep(0, n)),
+                      A = list(1),
+                      effects = list(
+                        list(id.x = 1:n,
+                             weight.x = -1,
+                             alpha.0 = rep(1, n),
+                             alpha.z1 = missing_data$z1)),
+                      tag = "imputation")
+```
+
+The missingness model is a binomial model describing how the probability of missing, $p_m$, may depend on other covariates. The model is
+$$
+  \text{logit}(p_{m,i}) = \gamma_0 + \gamma_x x_{true,i} + \gamma_{z_2} z_{2,i},
+$$
+and the stack is:
+
+```r
+stk_mis <- inla.stack(data = list(y_mis = as.numeric(is.na(missing_data$x))),
+                      A = list(1),
+                      effects = list(
+                        list(gamma.x = 1:n,
+                             gamma.0 = rep(1, n),
+                             gamma.z2 = missing_data$z2)),
+                      tag = "missingness")
+```
+
+We join the stacks together:
+
+```r
+stk_full <- inla.stack(stk_moi, stk_c, stk_imp, stk_mis)
+```
+
+In defining the formula, we now need to define the hyperparameter `gamma.x`, the same way as we define `beta.x`. This is a scaled copy of `id.x`.
+
+```r
+formula <- list(y_moi, y_classical, y_imp, y_mis) ~ - 1 +
+  beta.0 + beta.z1 + beta.z2 +
+  f(beta.x, copy = "id.x",
+    hyper = list(beta = list(param = c(0, 1/1000), fixed = FALSE))) +
+  f(id.x, weight.x, model = "iid", values = 1:n,
+    hyper = list(prec = list(initial = -15, fixed = TRUE))) +
+  f(gamma.x, copy = "id.x",
+    hyper = list(beta = list(param = c(0, 1/1000), fixed = FALSE))) +
+  alpha.0 + alpha.z1 + gamma.0 + gamma.z2
+```
+
+Since we don't have any measurement error in this case, we set the precision to be very high for the classical error model in the argument `scale`. 
+
+```r
+model_mnar <- inla(formula, data = inla.stack.data(stk_full),
+                  family = c("gaussian", "gaussian", "gaussian", "binomial"),
+                  scale = c(rep(1, n), rep(10^8, n), rep(1, n), rep(1, n)),
+                  control.family = list(
+                    list(hyper = list(prec = list(initial = log(1),
+                                                  param = c(10, 9),
+                                                  fixed = FALSE))),
+                    list(hyper = list(prec = list(initial = log(1),
+                                                  param = c(10, 9),
+                                                  fixed = FALSE))),
+                    list(hyper = list(prec = list(initial = log(1),
+                                                  param = c(10, 9),
+                                                  fixed = FALSE))),
+                    list()),
+                  control.predictor = list(compute = TRUE, link = 1)
+)
+
+summary(model_mnar)
+#> 
+#> Call:
+#>    c("inla.core(formula = formula, family = family, contrasts = contrasts, ", " data = data, quantiles = quantiles, E = E, 
+#>    offset = offset, ", " scale = scale, weights = weights, Ntrials = Ntrials, strata = strata, ", " lp.scale = lp.scale, 
+#>    link.covariates = link.covariates, verbose = verbose, ", " lincomb = lincomb, selection = selection, control.compute = 
+#>    control.compute, ", " control.predictor = control.predictor, control.family = control.family, ", " control.inla = 
+#>    control.inla, control.fixed = control.fixed, ", " control.mode = control.mode, control.expert = control.expert, ", " 
+#>    control.hazard = control.hazard, control.lincomb = control.lincomb, ", " control.update = control.update, control.lp.scale 
+#>    = control.lp.scale, ", " control.pardiso = control.pardiso, only.hyperparam = only.hyperparam, ", " inla.call = inla.call, 
+#>    inla.arg = inla.arg, num.threads = num.threads, ", " keep = keep, working.directory = working.directory, silent = silent, 
+#>    ", " inla.mode = inla.mode, safe = FALSE, debug = debug, .parent.frame = .parent.frame)" ) 
+#> Time used:
+#>     Pre = 1.81, Running = 2.59, Post = 0.652, Total = 5.05 
+#> Fixed effects:
+#>            mean    sd 0.025quant 0.5quant 0.975quant   mode kld
+#> beta.0    1.040 0.050      0.942    1.040      1.138  1.040   0
+#> beta.z1   2.005 0.036      1.933    2.005      2.076  2.005   0
+#> beta.z2   1.985 0.036      1.914    1.985      2.057  1.985   0
+#> alpha.0   1.011 0.032      0.947    1.011      1.074  1.011   0
+#> alpha.z1  0.292 0.033      0.228    0.292      0.355  0.292   0
+#> gamma.0  -1.510 0.122     -1.754   -1.509     -1.275 -1.509   0
+#> gamma.z2 -0.425 0.088     -0.597   -0.425     -0.252 -0.425   0
+#> 
+#> Random effects:
+#>   Name	  Model
+#>     id.x IID model
+#>    beta.x Copy
+#>    gamma.x Copy
+#> 
+#> Model hyperparameters:
+#>                                              mean    sd 0.025quant 0.5quant 0.975quant   mode
+#> Precision for the Gaussian observations     0.984 0.048      0.891    0.983       1.08  0.982
+#> Precision for the Gaussian observations[2]  1.127 0.358      0.574    1.077       1.97  0.984
+#> Precision for the Gaussian observations[3]  1.023 0.047      0.933    1.023       1.12  1.021
+#> Beta for beta.x                             1.954 0.035      1.886    1.953       2.02  1.952
+#> Beta for gamma.x                           -0.035 0.089     -0.212   -0.035       0.14 -0.035
+#> 
+#> Marginal log-Likelihood:  -11663.16 
+#>  is computed 
+#> Posterior summaries for the linear predictor and the fitted values are computed
+#> (Posterior marginals needs also 'control.compute=list(return.marginals.predictor=TRUE)')
+```
+
+
+Looking at the summary, most importantly, note that the model picks up `gamma.0` and `gamma.z2`, which were defined to be -1.5 and -0.5, respectively. In the data simulation, we did not construct the missingness of `x` to depend on the value of `x`, which would correspond to a "missing not at random" mechanism. The fact that the missingness of `x` depends on other observed covariates indicates a "missing at random" mechanism (as we simulated it to be). If the missingness of `x` did not depend on any other covariates, it would be "missing completely at random". 
+
+
+
+
