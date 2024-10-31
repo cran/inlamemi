@@ -1,7 +1,7 @@
 Package: inlamemi
 Type: Package
 Title: Missing Data and Measurement Error Modelling in INLA
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: c(
   person("Emma", "Skarstein", email = "emma@skarstein.no",
          role = c("cre", "aut", "cph"), 
@@ -25,10 +25,10 @@ URL: https://emmaskarstein.github.io/inlamemi/,
         https://github.com/emmaSkarstein/inlamemi
 Language: en-US
 NeedsCompilation: no
-Packaged: 2024-06-21 12:03:56 UTC; emmass
+Packaged: 2024-10-31 13:42:45 UTC; emmass
 Author: Emma Skarstein [cre, aut, cph]
     (<https://orcid.org/0000-0002-6347-855X>),
   Stefanie Muff [aut] (<https://orcid.org/0000-0002-8425-0757>)
 Maintainer: Emma Skarstein <emma@skarstein.no>
 Repository: CRAN
-Date/Publication: 2024-06-24 15:00:05 UTC
+Date/Publication: 2024-10-31 16:10:02 UTC

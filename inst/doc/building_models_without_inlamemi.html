@@ -12,7 +12,7 @@
 
 
 
-<title>How to not use inlamemi</title>
+<title>How to avoid using inlamemi</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -336,7 +336,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">How to not use inlamemi</h1>
+<h1 class="title toc-ignore">How to avoid using inlamemi</h1>
 
 
 
@@ -522,44 +522,33 @@ these.</p>
 <span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a>)</span>
 <span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a></span>
 <span id="cb11-20"><a href="#cb11-20" tabindex="-1"></a><span class="fu">summary</span>(model_sim)</span>
-<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-22"><a href="#cb11-22" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb11-23"><a href="#cb11-23" tabindex="-1"></a><span class="co">#&gt;    c(&quot;inla.core(formula = formula, family = family, contrasts = contrasts, &quot;, &quot; data = data, quantiles = quantiles, E = E, </span></span>
-<span id="cb11-24"><a href="#cb11-24" tabindex="-1"></a><span class="co">#&gt;    offset = offset, &quot;, &quot; scale = scale, weights = weights, Ntrials = Ntrials, strata = strata, &quot;, &quot; lp.scale = lp.scale, </span></span>
-<span id="cb11-25"><a href="#cb11-25" tabindex="-1"></a><span class="co">#&gt;    link.covariates = link.covariates, verbose = verbose, &quot;, &quot; lincomb = lincomb, selection = selection, control.compute = </span></span>
-<span id="cb11-26"><a href="#cb11-26" tabindex="-1"></a><span class="co">#&gt;    control.compute, &quot;, &quot; control.predictor = control.predictor, control.family = control.family, &quot;, &quot; control.inla = </span></span>
-<span id="cb11-27"><a href="#cb11-27" tabindex="-1"></a><span class="co">#&gt;    control.inla, control.fixed = control.fixed, &quot;, &quot; control.mode = control.mode, control.expert = control.expert, &quot;, &quot; </span></span>
-<span id="cb11-28"><a href="#cb11-28" tabindex="-1"></a><span class="co">#&gt;    control.hazard = control.hazard, control.lincomb = control.lincomb, &quot;, &quot; control.update = control.update, control.lp.scale </span></span>
-<span id="cb11-29"><a href="#cb11-29" tabindex="-1"></a><span class="co">#&gt;    = control.lp.scale, &quot;, &quot; control.pardiso = control.pardiso, only.hyperparam = only.hyperparam, &quot;, &quot; inla.call = inla.call, </span></span>
-<span id="cb11-30"><a href="#cb11-30" tabindex="-1"></a><span class="co">#&gt;    inla.arg = inla.arg, num.threads = num.threads, &quot;, &quot; keep = keep, working.directory = working.directory, silent = silent, </span></span>
-<span id="cb11-31"><a href="#cb11-31" tabindex="-1"></a><span class="co">#&gt;    &quot;, &quot; inla.mode = inla.mode, safe = FALSE, debug = debug, .parent.frame = .parent.frame)&quot; ) </span></span>
-<span id="cb11-32"><a href="#cb11-32" tabindex="-1"></a><span class="co">#&gt; Time used:</span></span>
-<span id="cb11-33"><a href="#cb11-33" tabindex="-1"></a><span class="co">#&gt;     Pre = 1.8, Running = 1.78, Post = 0.244, Total = 3.82 </span></span>
-<span id="cb11-34"><a href="#cb11-34" tabindex="-1"></a><span class="co">#&gt; Fixed effects:</span></span>
-<span id="cb11-35"><a href="#cb11-35" tabindex="-1"></a><span class="co">#&gt;          mean    sd 0.025quant 0.5quant 0.975quant  mode kld</span></span>
-<span id="cb11-36"><a href="#cb11-36" tabindex="-1"></a><span class="co">#&gt; beta.0  1.046 0.221      0.628    1.050      1.468 1.050   0</span></span>
-<span id="cb11-37"><a href="#cb11-37" tabindex="-1"></a><span class="co">#&gt; beta.z  1.945 0.392      1.256    1.955      2.658 1.951   0</span></span>
-<span id="cb11-38"><a href="#cb11-38" tabindex="-1"></a><span class="co">#&gt; alpha.0 1.033 0.051      0.934    1.033      1.132 1.033   0</span></span>
-<span id="cb11-39"><a href="#cb11-39" tabindex="-1"></a><span class="co">#&gt; alpha.z 2.025 0.052      1.922    2.025      2.127 2.025   0</span></span>
-<span id="cb11-40"><a href="#cb11-40" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-41"><a href="#cb11-41" tabindex="-1"></a><span class="co">#&gt; Random effects:</span></span>
-<span id="cb11-42"><a href="#cb11-42" tabindex="-1"></a><span class="co">#&gt;   Name     Model</span></span>
-<span id="cb11-43"><a href="#cb11-43" tabindex="-1"></a><span class="co">#&gt;     id.x IID model</span></span>
-<span id="cb11-44"><a href="#cb11-44" tabindex="-1"></a><span class="co">#&gt;    id.r IID model</span></span>
-<span id="cb11-45"><a href="#cb11-45" tabindex="-1"></a><span class="co">#&gt;    beta.x Copy</span></span>
-<span id="cb11-46"><a href="#cb11-46" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-47"><a href="#cb11-47" tabindex="-1"></a><span class="co">#&gt; Model hyperparameters:</span></span>
-<span id="cb11-48"><a href="#cb11-48" tabindex="-1"></a><span class="co">#&gt;                                             mean    sd 0.025quant 0.5quant 0.975quant  mode</span></span>
-<span id="cb11-49"><a href="#cb11-49" tabindex="-1"></a><span class="co">#&gt; Precision for the Gaussian observations    1.113 0.356      0.540    1.071       1.92 0.995</span></span>
-<span id="cb11-50"><a href="#cb11-50" tabindex="-1"></a><span class="co">#&gt; Precision for the Gaussian observations[2] 1.125 0.359      0.597    1.066       2.00 0.955</span></span>
-<span id="cb11-51"><a href="#cb11-51" tabindex="-1"></a><span class="co">#&gt; Precision for the Gaussian observations[3] 0.928 0.112      0.722    0.923       1.16 0.916</span></span>
-<span id="cb11-52"><a href="#cb11-52" tabindex="-1"></a><span class="co">#&gt; Precision for the Gaussian observations[4] 0.977 0.126      0.757    0.968       1.25 0.946</span></span>
-<span id="cb11-53"><a href="#cb11-53" tabindex="-1"></a><span class="co">#&gt; Beta for beta.x                            1.974 0.202      1.587    1.970       2.38 1.954</span></span>
-<span id="cb11-54"><a href="#cb11-54" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-55"><a href="#cb11-55" tabindex="-1"></a><span class="co">#&gt; Marginal log-Likelihood:  -20700.01 </span></span>
-<span id="cb11-56"><a href="#cb11-56" tabindex="-1"></a><span class="co">#&gt;  is computed </span></span>
-<span id="cb11-57"><a href="#cb11-57" tabindex="-1"></a><span class="co">#&gt; Posterior summaries for the linear predictor and the fitted values are computed</span></span>
-<span id="cb11-58"><a href="#cb11-58" tabindex="-1"></a><span class="co">#&gt; (Posterior marginals needs also &#39;control.compute=list(return.marginals.predictor=TRUE)&#39;)</span></span></code></pre></div>
+<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a><span class="co">#&gt; Time used:</span></span>
+<span id="cb11-22"><a href="#cb11-22" tabindex="-1"></a><span class="co">#&gt;     Pre = 1.87, Running = 2.34, Post = 0.176, Total = 4.38 </span></span>
+<span id="cb11-23"><a href="#cb11-23" tabindex="-1"></a><span class="co">#&gt; Fixed effects:</span></span>
+<span id="cb11-24"><a href="#cb11-24" tabindex="-1"></a><span class="co">#&gt;          mean    sd 0.025quant 0.5quant 0.975quant  mode kld</span></span>
+<span id="cb11-25"><a href="#cb11-25" tabindex="-1"></a><span class="co">#&gt; beta.0  1.030 0.219      0.612    1.029      1.435 1.025   0</span></span>
+<span id="cb11-26"><a href="#cb11-26" tabindex="-1"></a><span class="co">#&gt; beta.z  1.911 0.388      1.225    1.901      2.560 1.910   0</span></span>
+<span id="cb11-27"><a href="#cb11-27" tabindex="-1"></a><span class="co">#&gt; alpha.0 1.033 0.051      0.934    1.033      1.132 1.033   0</span></span>
+<span id="cb11-28"><a href="#cb11-28" tabindex="-1"></a><span class="co">#&gt; alpha.z 2.025 0.052      1.922    2.025      2.127 2.025   0</span></span>
+<span id="cb11-29"><a href="#cb11-29" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-30"><a href="#cb11-30" tabindex="-1"></a><span class="co">#&gt; Random effects:</span></span>
+<span id="cb11-31"><a href="#cb11-31" tabindex="-1"></a><span class="co">#&gt;   Name     Model</span></span>
+<span id="cb11-32"><a href="#cb11-32" tabindex="-1"></a><span class="co">#&gt;     id.x IID model</span></span>
+<span id="cb11-33"><a href="#cb11-33" tabindex="-1"></a><span class="co">#&gt;    id.r IID model</span></span>
+<span id="cb11-34"><a href="#cb11-34" tabindex="-1"></a><span class="co">#&gt;    beta.x Copy</span></span>
+<span id="cb11-35"><a href="#cb11-35" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-36"><a href="#cb11-36" tabindex="-1"></a><span class="co">#&gt; Model hyperparameters:</span></span>
+<span id="cb11-37"><a href="#cb11-37" tabindex="-1"></a><span class="co">#&gt;                                             mean    sd 0.025quant 0.5quant 0.975quant  mode</span></span>
+<span id="cb11-38"><a href="#cb11-38" tabindex="-1"></a><span class="co">#&gt; Precision for the Gaussian observations    1.128 0.365      0.556    1.080       1.98 0.992</span></span>
+<span id="cb11-39"><a href="#cb11-39" tabindex="-1"></a><span class="co">#&gt; Precision for the Gaussian observations[2] 1.127 0.355      0.581    1.076       1.96 0.983</span></span>
+<span id="cb11-40"><a href="#cb11-40" tabindex="-1"></a><span class="co">#&gt; Precision for the Gaussian observations[3] 0.927 0.111      0.729    0.920       1.17 0.905</span></span>
+<span id="cb11-41"><a href="#cb11-41" tabindex="-1"></a><span class="co">#&gt; Precision for the Gaussian observations[4] 0.977 0.128      0.749    0.969       1.25 0.954</span></span>
+<span id="cb11-42"><a href="#cb11-42" tabindex="-1"></a><span class="co">#&gt; Beta for beta.x                            1.972 0.207      1.559    1.974       2.38 1.981</span></span>
+<span id="cb11-43"><a href="#cb11-43" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-44"><a href="#cb11-44" tabindex="-1"></a><span class="co">#&gt; Marginal log-Likelihood:  -20699.96 </span></span>
+<span id="cb11-45"><a href="#cb11-45" tabindex="-1"></a><span class="co">#&gt;  is computed </span></span>
+<span id="cb11-46"><a href="#cb11-46" tabindex="-1"></a><span class="co">#&gt; Posterior summaries for the linear predictor and the fitted values are computed</span></span>
+<span id="cb11-47"><a href="#cb11-47" tabindex="-1"></a><span class="co">#&gt; (Posterior marginals needs also &#39;control.compute=list(return.marginals.predictor=TRUE)&#39;)</span></span></code></pre></div>
 </div>
 <div id="a-model-for-missing-data-missing-not-at-random" class="section level2">
 <h2>A model for missing data, missing not at random</h2>
@@ -588,136 +577,125 @@ covariate <code>z2</code> (corresponding to the missingness model).</p>
 <span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a>x_obs[m] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
 <span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a></span>
 <span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(x_obs))<span class="sc">/</span><span class="fu">length</span>(x_obs)</span>
-<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co">#&gt; [1] 0.183</span></span>
-<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a></span>
-<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a>beta<span class="fl">.0</span> <span class="ot">&lt;-</span> <span class="dv">1</span>; beta.x <span class="ot">&lt;-</span> <span class="dv">2</span>; beta.z1 <span class="ot">&lt;-</span> <span class="dv">2</span>; beta.z2 <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a>y <span class="ot">&lt;-</span> beta<span class="fl">.0</span> <span class="sc">+</span> beta.x<span class="sc">*</span>x <span class="sc">+</span> beta.z1<span class="sc">*</span>z1 <span class="sc">+</span> beta.z2<span class="sc">*</span>z2 <span class="sc">+</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a></span>
-<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a>missing_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y =</span> y, <span class="at">x =</span> x_obs, <span class="at">x_true =</span> x, <span class="at">z1 =</span> z1, <span class="at">z2 =</span> z2)</span></code></pre></div>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co">#&gt; [1] 0.183</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>beta<span class="fl">.0</span> <span class="ot">&lt;-</span> <span class="dv">1</span>; beta.x <span class="ot">&lt;-</span> <span class="dv">2</span>; beta.z1 <span class="ot">&lt;-</span> <span class="dv">2</span>; beta.z2 <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>y <span class="ot">&lt;-</span> beta<span class="fl">.0</span> <span class="sc">+</span> beta.x<span class="sc">*</span>x <span class="sc">+</span> beta.z1<span class="sc">*</span>z1 <span class="sc">+</span> beta.z2<span class="sc">*</span>z2 <span class="sc">+</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>missing_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y =</span> y, <span class="at">x =</span> x_obs, <span class="at">x_true =</span> x, <span class="at">z1 =</span> z1, <span class="at">z2 =</span> z2)</span></code></pre></div>
 <p>The main model of interest is in this case <span class="math display">\[
 y_i = \beta_0 + \beta_x x_{true,i} + \beta_{z_1} z_{1,i} + \beta_{z_2}
 z_{2,i} + \varepsilon_i ,
 \]</span> and the stack is:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>stk_moi <span class="ot">&lt;-</span> <span class="fu">inla.stack</span>(<span class="at">data =</span> <span class="fu">list</span>(<span class="at">y_moi =</span> missing_data<span class="sc">$</span>y),</span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>                      <span class="at">A =</span> <span class="fu">list</span>(<span class="dv">1</span>),</span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>                      <span class="at">effects =</span> <span class="fu">list</span>(</span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>                        <span class="fu">list</span>(<span class="at">beta.0 =</span> <span class="fu">rep</span>(<span class="dv">1</span>, n),</span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>                             <span class="at">beta.x =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>                             <span class="at">beta.z1 =</span> missing_data<span class="sc">$</span>z1,</span>
-<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>                             <span class="at">beta.z2 =</span> missing_data<span class="sc">$</span>z2)),</span>
-<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>                      <span class="at">tag =</span> <span class="st">&quot;moi&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>stk_moi <span class="ot">&lt;-</span> <span class="fu">inla.stack</span>(<span class="at">data =</span> <span class="fu">list</span>(<span class="at">y_moi =</span> missing_data<span class="sc">$</span>y),</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>                      <span class="at">A =</span> <span class="fu">list</span>(<span class="dv">1</span>),</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>                      <span class="at">effects =</span> <span class="fu">list</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>                        <span class="fu">list</span>(<span class="at">beta.0 =</span> <span class="fu">rep</span>(<span class="dv">1</span>, n),</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>                             <span class="at">beta.x =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>                             <span class="at">beta.z1 =</span> missing_data<span class="sc">$</span>z1,</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>                             <span class="at">beta.z2 =</span> missing_data<span class="sc">$</span>z2)),</span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>                      <span class="at">tag =</span> <span class="st">&quot;moi&quot;</span>)</span></code></pre></div>
 <p>The classical measurement error is just functioning as a link in this
 case, but the model is <span class="math display">\[
   x_{obs, i} = x_{true, i} + u_{c,i},
 \]</span> where the precision of <span class="math inline">\(u_{c,i}\)</span> is set to be very high for those
 <span class="math inline">\(i\)</span> where <span class="math inline">\(x_{obs,i}\)</span> is observed. The stack for this
 level is:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>stk_c <span class="ot">&lt;-</span> <span class="fu">inla.stack</span>(<span class="at">data =</span> <span class="fu">list</span>(<span class="at">y_classical =</span> missing_data<span class="sc">$</span>x),</span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>                    <span class="at">A =</span> <span class="fu">list</span>(<span class="dv">1</span>),</span>
-<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>                    <span class="at">effects =</span> <span class="fu">list</span>(</span>
-<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>                      <span class="fu">list</span>(<span class="at">id.x =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
-<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>                           <span class="at">weight.x =</span> <span class="dv">1</span>)),</span>
-<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>                    <span class="at">tag =</span> <span class="st">&quot;classical&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>stk_c <span class="ot">&lt;-</span> <span class="fu">inla.stack</span>(<span class="at">data =</span> <span class="fu">list</span>(<span class="at">y_classical =</span> missing_data<span class="sc">$</span>x),</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>                    <span class="at">A =</span> <span class="fu">list</span>(<span class="dv">1</span>),</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>                    <span class="at">effects =</span> <span class="fu">list</span>(</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>                      <span class="fu">list</span>(<span class="at">id.x =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>                           <span class="at">weight.x =</span> <span class="dv">1</span>)),</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>                    <span class="at">tag =</span> <span class="st">&quot;classical&quot;</span>)</span></code></pre></div>
 <p>Next we have the imputation model <span class="math display">\[
   0 = -x_{true,i} + \alpha_0 + \alpha_{z_1} z_{1,i} + \varepsilon_{x,i},
 \]</span> and the stack is</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>stk_imp <span class="ot">&lt;-</span> <span class="fu">inla.stack</span>(<span class="at">data =</span> <span class="fu">list</span>(<span class="at">y_imp =</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)),</span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>                      <span class="at">A =</span> <span class="fu">list</span>(<span class="dv">1</span>),</span>
-<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>                      <span class="at">effects =</span> <span class="fu">list</span>(</span>
-<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>                        <span class="fu">list</span>(<span class="at">id.x =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
-<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>                             <span class="at">weight.x =</span> <span class="sc">-</span><span class="dv">1</span>,</span>
-<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>                             <span class="at">alpha.0 =</span> <span class="fu">rep</span>(<span class="dv">1</span>, n),</span>
-<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>                             <span class="at">alpha.z1 =</span> missing_data<span class="sc">$</span>z1)),</span>
-<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a>                      <span class="at">tag =</span> <span class="st">&quot;imputation&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>stk_imp <span class="ot">&lt;-</span> <span class="fu">inla.stack</span>(<span class="at">data =</span> <span class="fu">list</span>(<span class="at">y_imp =</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)),</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>                      <span class="at">A =</span> <span class="fu">list</span>(<span class="dv">1</span>),</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>                      <span class="at">effects =</span> <span class="fu">list</span>(</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>                        <span class="fu">list</span>(<span class="at">id.x =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>                             <span class="at">weight.x =</span> <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>                             <span class="at">alpha.0 =</span> <span class="fu">rep</span>(<span class="dv">1</span>, n),</span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>                             <span class="at">alpha.z1 =</span> missing_data<span class="sc">$</span>z1)),</span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>                      <span class="at">tag =</span> <span class="st">&quot;imputation&quot;</span>)</span></code></pre></div>
 <p>The missingness model is a binomial model describing how the
 probability of missing, <span class="math inline">\(p_m\)</span>, may
 depend on other covariates. The model is <span class="math display">\[
   \text{logit}(p_{m,i}) = \gamma_0 + \gamma_x x_{true,i} + \gamma_{z_2}
 z_{2,i},
 \]</span> and the stack is:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>stk_mis <span class="ot">&lt;-</span> <span class="fu">inla.stack</span>(<span class="at">data =</span> <span class="fu">list</span>(<span class="at">y_mis =</span> <span class="fu">as.numeric</span>(<span class="fu">is.na</span>(missing_data<span class="sc">$</span>x))),</span>
-<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>                      <span class="at">A =</span> <span class="fu">list</span>(<span class="dv">1</span>),</span>
-<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>                      <span class="at">effects =</span> <span class="fu">list</span>(</span>
-<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>                        <span class="fu">list</span>(<span class="at">gamma.x =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
-<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>                             <span class="at">gamma.0 =</span> <span class="fu">rep</span>(<span class="dv">1</span>, n),</span>
-<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>                             <span class="at">gamma.z2 =</span> missing_data<span class="sc">$</span>z2)),</span>
-<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>                      <span class="at">tag =</span> <span class="st">&quot;missingness&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>stk_mis <span class="ot">&lt;-</span> <span class="fu">inla.stack</span>(<span class="at">data =</span> <span class="fu">list</span>(<span class="at">y_mis =</span> <span class="fu">as.numeric</span>(<span class="fu">is.na</span>(missing_data<span class="sc">$</span>x))),</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>                      <span class="at">A =</span> <span class="fu">list</span>(<span class="dv">1</span>),</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>                      <span class="at">effects =</span> <span class="fu">list</span>(</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>                        <span class="fu">list</span>(<span class="at">gamma.x =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>                             <span class="at">gamma.0 =</span> <span class="fu">rep</span>(<span class="dv">1</span>, n),</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>                             <span class="at">gamma.z2 =</span> missing_data<span class="sc">$</span>z2)),</span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>                      <span class="at">tag =</span> <span class="st">&quot;missingness&quot;</span>)</span></code></pre></div>
 <p>We join the stacks together:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>stk_full <span class="ot">&lt;-</span> <span class="fu">inla.stack</span>(stk_moi, stk_c, stk_imp, stk_mis)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>stk_full <span class="ot">&lt;-</span> <span class="fu">inla.stack</span>(stk_moi, stk_c, stk_imp, stk_mis)</span></code></pre></div>
 <p>In defining the formula, we now need to define the hyperparameter
 <code>gamma.x</code>, the same way as we define <code>beta.x</code>.
 This is a scaled copy of <code>id.x</code>.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>formula <span class="ot">&lt;-</span> <span class="fu">list</span>(y_moi, y_classical, y_imp, y_mis) <span class="sc">~</span> <span class="sc">-</span> <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>  beta<span class="fl">.0</span> <span class="sc">+</span> beta.z1 <span class="sc">+</span> beta.z2 <span class="sc">+</span></span>
-<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>  <span class="fu">f</span>(beta.x, <span class="at">copy =</span> <span class="st">&quot;id.x&quot;</span>,</span>
-<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>    <span class="at">hyper =</span> <span class="fu">list</span>(<span class="at">beta =</span> <span class="fu">list</span>(<span class="at">param =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">1000</span>), <span class="at">fixed =</span> <span class="cn">FALSE</span>))) <span class="sc">+</span></span>
-<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>  <span class="fu">f</span>(id.x, weight.x, <span class="at">model =</span> <span class="st">&quot;iid&quot;</span>, <span class="at">values =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
-<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>    <span class="at">hyper =</span> <span class="fu">list</span>(<span class="at">prec =</span> <span class="fu">list</span>(<span class="at">initial =</span> <span class="sc">-</span><span class="dv">15</span>, <span class="at">fixed =</span> <span class="cn">TRUE</span>))) <span class="sc">+</span></span>
-<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>  <span class="fu">f</span>(gamma.x, <span class="at">copy =</span> <span class="st">&quot;id.x&quot;</span>,</span>
-<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>    <span class="at">hyper =</span> <span class="fu">list</span>(<span class="at">beta =</span> <span class="fu">list</span>(<span class="at">param =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">1000</span>), <span class="at">fixed =</span> <span class="cn">FALSE</span>))) <span class="sc">+</span></span>
-<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>  alpha<span class="fl">.0</span> <span class="sc">+</span> alpha.z1 <span class="sc">+</span> gamma<span class="fl">.0</span> <span class="sc">+</span> gamma.z2</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>formula <span class="ot">&lt;-</span> <span class="fu">list</span>(y_moi, y_classical, y_imp, y_mis) <span class="sc">~</span> <span class="sc">-</span> <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>  beta<span class="fl">.0</span> <span class="sc">+</span> beta.z1 <span class="sc">+</span> beta.z2 <span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>  <span class="fu">f</span>(beta.x, <span class="at">copy =</span> <span class="st">&quot;id.x&quot;</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>    <span class="at">hyper =</span> <span class="fu">list</span>(<span class="at">beta =</span> <span class="fu">list</span>(<span class="at">param =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">1000</span>), <span class="at">fixed =</span> <span class="cn">FALSE</span>))) <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>  <span class="fu">f</span>(id.x, weight.x, <span class="at">model =</span> <span class="st">&quot;iid&quot;</span>, <span class="at">values =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>    <span class="at">hyper =</span> <span class="fu">list</span>(<span class="at">prec =</span> <span class="fu">list</span>(<span class="at">initial =</span> <span class="sc">-</span><span class="dv">15</span>, <span class="at">fixed =</span> <span class="cn">TRUE</span>))) <span class="sc">+</span></span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>  <span class="fu">f</span>(gamma.x, <span class="at">copy =</span> <span class="st">&quot;id.x&quot;</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a>    <span class="at">hyper =</span> <span class="fu">list</span>(<span class="at">beta =</span> <span class="fu">list</span>(<span class="at">param =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">1000</span>), <span class="at">fixed =</span> <span class="cn">FALSE</span>))) <span class="sc">+</span></span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a>  alpha<span class="fl">.0</span> <span class="sc">+</span> alpha.z1 <span class="sc">+</span> gamma<span class="fl">.0</span> <span class="sc">+</span> gamma.z2</span></code></pre></div>
 <p>Since we don’t have any measurement error in this case, we set the
 precision to be very high for the classical error model in the argument
 <code>scale</code>.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>model_mnar <span class="ot">&lt;-</span> <span class="fu">inla</span>(formula, <span class="at">data =</span> <span class="fu">inla.stack.data</span>(stk_full),</span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>                  <span class="at">family =</span> <span class="fu">c</span>(<span class="st">&quot;gaussian&quot;</span>, <span class="st">&quot;gaussian&quot;</span>, <span class="st">&quot;gaussian&quot;</span>, <span class="st">&quot;binomial&quot;</span>),</span>
-<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>                  <span class="at">scale =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>, n), <span class="fu">rep</span>(<span class="dv">10</span><span class="sc">^</span><span class="dv">8</span>, n), <span class="fu">rep</span>(<span class="dv">1</span>, n), <span class="fu">rep</span>(<span class="dv">1</span>, n)),</span>
-<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>                  <span class="at">control.family =</span> <span class="fu">list</span>(</span>
-<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>                    <span class="fu">list</span>(<span class="at">hyper =</span> <span class="fu">list</span>(<span class="at">prec =</span> <span class="fu">list</span>(<span class="at">initial =</span> <span class="fu">log</span>(<span class="dv">1</span>),</span>
-<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>                                                  <span class="at">param =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">9</span>),</span>
-<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>                                                  <span class="at">fixed =</span> <span class="cn">FALSE</span>))),</span>
-<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a>                    <span class="fu">list</span>(<span class="at">hyper =</span> <span class="fu">list</span>(<span class="at">prec =</span> <span class="fu">list</span>(<span class="at">initial =</span> <span class="fu">log</span>(<span class="dv">1</span>),</span>
-<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a>                                                  <span class="at">param =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">9</span>),</span>
-<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a>                                                  <span class="at">fixed =</span> <span class="cn">FALSE</span>))),</span>
-<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a>                    <span class="fu">list</span>(<span class="at">hyper =</span> <span class="fu">list</span>(<span class="at">prec =</span> <span class="fu">list</span>(<span class="at">initial =</span> <span class="fu">log</span>(<span class="dv">1</span>),</span>
-<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a>                                                  <span class="at">param =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">9</span>),</span>
-<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a>                                                  <span class="at">fixed =</span> <span class="cn">FALSE</span>))),</span>
-<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a>                    <span class="fu">list</span>()),</span>
-<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a>                  <span class="at">control.predictor =</span> <span class="fu">list</span>(<span class="at">compute =</span> <span class="cn">TRUE</span>, <span class="at">link =</span> <span class="dv">1</span>)</span>
-<span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a>)</span>
-<span id="cb19-17"><a href="#cb19-17" tabindex="-1"></a></span>
-<span id="cb19-18"><a href="#cb19-18" tabindex="-1"></a><span class="fu">summary</span>(model_mnar)</span>
-<span id="cb19-19"><a href="#cb19-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb19-20"><a href="#cb19-20" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb19-21"><a href="#cb19-21" tabindex="-1"></a><span class="co">#&gt;    c(&quot;inla.core(formula = formula, family = family, contrasts = contrasts, &quot;, &quot; data = data, quantiles = quantiles, E = E, </span></span>
-<span id="cb19-22"><a href="#cb19-22" tabindex="-1"></a><span class="co">#&gt;    offset = offset, &quot;, &quot; scale = scale, weights = weights, Ntrials = Ntrials, strata = strata, &quot;, &quot; lp.scale = lp.scale, </span></span>
-<span id="cb19-23"><a href="#cb19-23" tabindex="-1"></a><span class="co">#&gt;    link.covariates = link.covariates, verbose = verbose, &quot;, &quot; lincomb = lincomb, selection = selection, control.compute = </span></span>
-<span id="cb19-24"><a href="#cb19-24" tabindex="-1"></a><span class="co">#&gt;    control.compute, &quot;, &quot; control.predictor = control.predictor, control.family = control.family, &quot;, &quot; control.inla = </span></span>
-<span id="cb19-25"><a href="#cb19-25" tabindex="-1"></a><span class="co">#&gt;    control.inla, control.fixed = control.fixed, &quot;, &quot; control.mode = control.mode, control.expert = control.expert, &quot;, &quot; </span></span>
-<span id="cb19-26"><a href="#cb19-26" tabindex="-1"></a><span class="co">#&gt;    control.hazard = control.hazard, control.lincomb = control.lincomb, &quot;, &quot; control.update = control.update, control.lp.scale </span></span>
-<span id="cb19-27"><a href="#cb19-27" tabindex="-1"></a><span class="co">#&gt;    = control.lp.scale, &quot;, &quot; control.pardiso = control.pardiso, only.hyperparam = only.hyperparam, &quot;, &quot; inla.call = inla.call, </span></span>
-<span id="cb19-28"><a href="#cb19-28" tabindex="-1"></a><span class="co">#&gt;    inla.arg = inla.arg, num.threads = num.threads, &quot;, &quot; keep = keep, working.directory = working.directory, silent = silent, </span></span>
-<span id="cb19-29"><a href="#cb19-29" tabindex="-1"></a><span class="co">#&gt;    &quot;, &quot; inla.mode = inla.mode, safe = FALSE, debug = debug, .parent.frame = .parent.frame)&quot; ) </span></span>
-<span id="cb19-30"><a href="#cb19-30" tabindex="-1"></a><span class="co">#&gt; Time used:</span></span>
-<span id="cb19-31"><a href="#cb19-31" tabindex="-1"></a><span class="co">#&gt;     Pre = 1.81, Running = 2.59, Post = 0.652, Total = 5.05 </span></span>
-<span id="cb19-32"><a href="#cb19-32" tabindex="-1"></a><span class="co">#&gt; Fixed effects:</span></span>
-<span id="cb19-33"><a href="#cb19-33" tabindex="-1"></a><span class="co">#&gt;            mean    sd 0.025quant 0.5quant 0.975quant   mode kld</span></span>
-<span id="cb19-34"><a href="#cb19-34" tabindex="-1"></a><span class="co">#&gt; beta.0    1.040 0.050      0.942    1.040      1.138  1.040   0</span></span>
-<span id="cb19-35"><a href="#cb19-35" tabindex="-1"></a><span class="co">#&gt; beta.z1   2.005 0.036      1.933    2.005      2.076  2.005   0</span></span>
-<span id="cb19-36"><a href="#cb19-36" tabindex="-1"></a><span class="co">#&gt; beta.z2   1.985 0.036      1.914    1.985      2.057  1.985   0</span></span>
-<span id="cb19-37"><a href="#cb19-37" tabindex="-1"></a><span class="co">#&gt; alpha.0   1.011 0.032      0.947    1.011      1.074  1.011   0</span></span>
-<span id="cb19-38"><a href="#cb19-38" tabindex="-1"></a><span class="co">#&gt; alpha.z1  0.292 0.033      0.228    0.292      0.355  0.292   0</span></span>
-<span id="cb19-39"><a href="#cb19-39" tabindex="-1"></a><span class="co">#&gt; gamma.0  -1.510 0.122     -1.754   -1.509     -1.275 -1.509   0</span></span>
-<span id="cb19-40"><a href="#cb19-40" tabindex="-1"></a><span class="co">#&gt; gamma.z2 -0.425 0.088     -0.597   -0.425     -0.252 -0.425   0</span></span>
-<span id="cb19-41"><a href="#cb19-41" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb19-42"><a href="#cb19-42" tabindex="-1"></a><span class="co">#&gt; Random effects:</span></span>
-<span id="cb19-43"><a href="#cb19-43" tabindex="-1"></a><span class="co">#&gt;   Name     Model</span></span>
-<span id="cb19-44"><a href="#cb19-44" tabindex="-1"></a><span class="co">#&gt;     id.x IID model</span></span>
-<span id="cb19-45"><a href="#cb19-45" tabindex="-1"></a><span class="co">#&gt;    beta.x Copy</span></span>
-<span id="cb19-46"><a href="#cb19-46" tabindex="-1"></a><span class="co">#&gt;    gamma.x Copy</span></span>
-<span id="cb19-47"><a href="#cb19-47" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb19-48"><a href="#cb19-48" tabindex="-1"></a><span class="co">#&gt; Model hyperparameters:</span></span>
-<span id="cb19-49"><a href="#cb19-49" tabindex="-1"></a><span class="co">#&gt;                                              mean    sd 0.025quant 0.5quant 0.975quant   mode</span></span>
-<span id="cb19-50"><a href="#cb19-50" tabindex="-1"></a><span class="co">#&gt; Precision for the Gaussian observations     0.984 0.048      0.891    0.983       1.08  0.982</span></span>
-<span id="cb19-51"><a href="#cb19-51" tabindex="-1"></a><span class="co">#&gt; Precision for the Gaussian observations[2]  1.127 0.358      0.574    1.077       1.97  0.984</span></span>
-<span id="cb19-52"><a href="#cb19-52" tabindex="-1"></a><span class="co">#&gt; Precision for the Gaussian observations[3]  1.023 0.047      0.933    1.023       1.12  1.021</span></span>
-<span id="cb19-53"><a href="#cb19-53" tabindex="-1"></a><span class="co">#&gt; Beta for beta.x                             1.954 0.035      1.886    1.953       2.02  1.952</span></span>
-<span id="cb19-54"><a href="#cb19-54" tabindex="-1"></a><span class="co">#&gt; Beta for gamma.x                           -0.035 0.089     -0.212   -0.035       0.14 -0.035</span></span>
-<span id="cb19-55"><a href="#cb19-55" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb19-56"><a href="#cb19-56" tabindex="-1"></a><span class="co">#&gt; Marginal log-Likelihood:  -11663.16 </span></span>
-<span id="cb19-57"><a href="#cb19-57" tabindex="-1"></a><span class="co">#&gt;  is computed </span></span>
-<span id="cb19-58"><a href="#cb19-58" tabindex="-1"></a><span class="co">#&gt; Posterior summaries for the linear predictor and the fitted values are computed</span></span>
-<span id="cb19-59"><a href="#cb19-59" tabindex="-1"></a><span class="co">#&gt; (Posterior marginals needs also &#39;control.compute=list(return.marginals.predictor=TRUE)&#39;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>model_mnar <span class="ot">&lt;-</span> <span class="fu">inla</span>(formula, <span class="at">data =</span> <span class="fu">inla.stack.data</span>(stk_full),</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>                  <span class="at">family =</span> <span class="fu">c</span>(<span class="st">&quot;gaussian&quot;</span>, <span class="st">&quot;gaussian&quot;</span>, <span class="st">&quot;gaussian&quot;</span>, <span class="st">&quot;binomial&quot;</span>),</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>                  <span class="at">scale =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>, n), <span class="fu">rep</span>(<span class="dv">10</span><span class="sc">^</span><span class="dv">8</span>, n), <span class="fu">rep</span>(<span class="dv">1</span>, n), <span class="fu">rep</span>(<span class="dv">1</span>, n)),</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>                  <span class="at">control.family =</span> <span class="fu">list</span>(</span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>                    <span class="fu">list</span>(<span class="at">hyper =</span> <span class="fu">list</span>(<span class="at">prec =</span> <span class="fu">list</span>(<span class="at">initial =</span> <span class="fu">log</span>(<span class="dv">1</span>),</span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a>                                                  <span class="at">param =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">9</span>),</span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a>                                                  <span class="at">fixed =</span> <span class="cn">FALSE</span>))),</span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a>                    <span class="fu">list</span>(<span class="at">hyper =</span> <span class="fu">list</span>(<span class="at">prec =</span> <span class="fu">list</span>(<span class="at">initial =</span> <span class="fu">log</span>(<span class="dv">1</span>),</span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a>                                                  <span class="at">param =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">9</span>),</span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a>                                                  <span class="at">fixed =</span> <span class="cn">FALSE</span>))),</span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a>                    <span class="fu">list</span>(<span class="at">hyper =</span> <span class="fu">list</span>(<span class="at">prec =</span> <span class="fu">list</span>(<span class="at">initial =</span> <span class="fu">log</span>(<span class="dv">1</span>),</span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a>                                                  <span class="at">param =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">9</span>),</span>
+<span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a>                                                  <span class="at">fixed =</span> <span class="cn">FALSE</span>))),</span>
+<span id="cb20-14"><a href="#cb20-14" tabindex="-1"></a>                    <span class="fu">list</span>()),</span>
+<span id="cb20-15"><a href="#cb20-15" tabindex="-1"></a>                  <span class="at">control.predictor =</span> <span class="fu">list</span>(<span class="at">compute =</span> <span class="cn">TRUE</span>, <span class="at">link =</span> <span class="dv">1</span>)</span>
+<span id="cb20-16"><a href="#cb20-16" tabindex="-1"></a>)</span>
+<span id="cb20-17"><a href="#cb20-17" tabindex="-1"></a></span>
+<span id="cb20-18"><a href="#cb20-18" tabindex="-1"></a><span class="fu">summary</span>(model_mnar)</span>
+<span id="cb20-19"><a href="#cb20-19" tabindex="-1"></a><span class="co">#&gt; Time used:</span></span>
+<span id="cb20-20"><a href="#cb20-20" tabindex="-1"></a><span class="co">#&gt;     Pre = 1.9, Running = 3.8, Post = 0.175, Total = 5.88 </span></span>
+<span id="cb20-21"><a href="#cb20-21" tabindex="-1"></a><span class="co">#&gt; Fixed effects:</span></span>
+<span id="cb20-22"><a href="#cb20-22" tabindex="-1"></a><span class="co">#&gt;            mean    sd 0.025quant 0.5quant 0.975quant   mode kld</span></span>
+<span id="cb20-23"><a href="#cb20-23" tabindex="-1"></a><span class="co">#&gt; beta.0    1.038 0.050      0.940    1.038      1.136  1.038   0</span></span>
+<span id="cb20-24"><a href="#cb20-24" tabindex="-1"></a><span class="co">#&gt; beta.z1   2.004 0.036      1.933    2.004      2.075  2.004   0</span></span>
+<span id="cb20-25"><a href="#cb20-25" tabindex="-1"></a><span class="co">#&gt; beta.z2   1.985 0.036      1.914    1.985      2.057  1.985   0</span></span>
+<span id="cb20-26"><a href="#cb20-26" tabindex="-1"></a><span class="co">#&gt; alpha.0   1.011 0.032      0.947    1.011      1.074  1.011   0</span></span>
+<span id="cb20-27"><a href="#cb20-27" tabindex="-1"></a><span class="co">#&gt; alpha.z1  0.292 0.033      0.228    0.292      0.355  0.292   0</span></span>
+<span id="cb20-28"><a href="#cb20-28" tabindex="-1"></a><span class="co">#&gt; gamma.0  -1.510 0.122     -1.754   -1.509     -1.275 -1.509   0</span></span>
+<span id="cb20-29"><a href="#cb20-29" tabindex="-1"></a><span class="co">#&gt; gamma.z2 -0.425 0.088     -0.597   -0.425     -0.252 -0.425   0</span></span>
+<span id="cb20-30"><a href="#cb20-30" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-31"><a href="#cb20-31" tabindex="-1"></a><span class="co">#&gt; Random effects:</span></span>
+<span id="cb20-32"><a href="#cb20-32" tabindex="-1"></a><span class="co">#&gt;   Name     Model</span></span>
+<span id="cb20-33"><a href="#cb20-33" tabindex="-1"></a><span class="co">#&gt;     id.x IID model</span></span>
+<span id="cb20-34"><a href="#cb20-34" tabindex="-1"></a><span class="co">#&gt;    beta.x Copy</span></span>
+<span id="cb20-35"><a href="#cb20-35" tabindex="-1"></a><span class="co">#&gt;    gamma.x Copy</span></span>
+<span id="cb20-36"><a href="#cb20-36" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-37"><a href="#cb20-37" tabindex="-1"></a><span class="co">#&gt; Model hyperparameters:</span></span>
+<span id="cb20-38"><a href="#cb20-38" tabindex="-1"></a><span class="co">#&gt;                                              mean    sd 0.025quant 0.5quant 0.975quant   mode</span></span>
+<span id="cb20-39"><a href="#cb20-39" tabindex="-1"></a><span class="co">#&gt; Precision for the Gaussian observations     0.983 0.048      0.890    0.983      1.079  0.984</span></span>
+<span id="cb20-40"><a href="#cb20-40" tabindex="-1"></a><span class="co">#&gt; Precision for the Gaussian observations[2]  1.130 0.357      0.590    1.077      1.981  0.977</span></span>
+<span id="cb20-41"><a href="#cb20-41" tabindex="-1"></a><span class="co">#&gt; Precision for the Gaussian observations[3]  1.023 0.047      0.932    1.022      1.119  1.020</span></span>
+<span id="cb20-42"><a href="#cb20-42" tabindex="-1"></a><span class="co">#&gt; Beta for beta.x                             1.953 0.035      1.884    1.953      2.021  1.955</span></span>
+<span id="cb20-43"><a href="#cb20-43" tabindex="-1"></a><span class="co">#&gt; Beta for gamma.x                           -0.036 0.089     -0.213   -0.036      0.138 -0.034</span></span>
+<span id="cb20-44"><a href="#cb20-44" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-45"><a href="#cb20-45" tabindex="-1"></a><span class="co">#&gt; Marginal log-Likelihood:  -11663.19 </span></span>
+<span id="cb20-46"><a href="#cb20-46" tabindex="-1"></a><span class="co">#&gt;  is computed </span></span>
+<span id="cb20-47"><a href="#cb20-47" tabindex="-1"></a><span class="co">#&gt; Posterior summaries for the linear predictor and the fitted values are computed</span></span>
+<span id="cb20-48"><a href="#cb20-48" tabindex="-1"></a><span class="co">#&gt; (Posterior marginals needs also &#39;control.compute=list(return.marginals.predictor=TRUE)&#39;)</span></span></code></pre></div>
 <p>Looking at the summary, most importantly, note that the model picks
 up <code>gamma.0</code> and <code>gamma.z2</code>, which were defined to
 be -1.5 and -0.5, respectively. In the data simulation, we did not

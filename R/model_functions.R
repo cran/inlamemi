@@ -5,6 +5,7 @@
 #'
 #' @return An object of class "formula".
 #' @export
+#' @keywords internal
 #'
 #' @examplesIf requireNamespace('INLA')
 #' make_inlamemi_formula(formula_moi = y ~ x + z,
@@ -42,7 +43,11 @@ make_inlamemi_formula <- function(formula_moi,
 
   # Define covariates in output formula as all variables in moi formula
   #  except the response and error prone covariate:
-  covariates_error_free_string <- paste0("beta.", vars$covariates_error_free)
+  if(length(vars$covariates_error_free > 0)){
+    covariates_error_free_string <- paste0("beta.", vars$covariates_error_free)
+  }else{
+    covariates_error_free_string <- ""
+  }
 
   # Check the prior for beta.x
   # If only one prior is given, put it in a list so the indexation turns out correctly
@@ -220,6 +225,7 @@ make_inlamemi_formula <- function(formula_moi,
 #'
 #' @return An object of class inla.stack with data structured according to specified formulas and error models.
 #' @export
+#' @keywords internal
 #'
 #' @examplesIf requireNamespace('INLA')
 #' make_inlamemi_stacks(formula_moi = y ~ x + z,
@@ -636,6 +642,7 @@ make_inlamemi_stacks <- function(formula_moi,
 #' @param inlamemi_stack object of type inla.stack
 #'
 #' @export
+#' @keywords internal
 #'
 #' @return A vector specifying the likelihood family for each model level.
 #' @examplesIf requireNamespace('INLA')
@@ -671,6 +678,7 @@ make_inlamemi_families <- function(family_moi, inlamemi_stack){
 #'
 #' @return A vector reflecting the scaling factor for the residual terms in each model level.
 #' @export
+#' @keywords internal
 #'
 #' @examplesIf requireNamespace('INLA')
 #' stacks <- make_inlamemi_stacks(data = simple_data,
@@ -744,6 +752,7 @@ make_inlamemi_scaling_vector <- function(inlamemi_stack,
 #'
 #' @return the "control.family" argument to be passed to inla, a list of "control.family" arguments for each model in the hierarchical measurement error model.
 #' @export
+#' @keywords internal
 #'
 #' @examplesIf requireNamespace('INLA')
 #' make_inlamemi_control.family(
